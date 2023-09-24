@@ -1,0 +1,10 @@
+[
+    {
+        "id": 1117,
+        "nombre": "notebook",
+        "tipo": "electronica",
+        "stock": "3",
+        "precio": "3000",
+        "codigoDeBarra": "101029"
+    }
+]
