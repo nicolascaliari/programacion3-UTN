@@ -1,55 +1,27 @@
 <?php
-class PizzaConsultar {
-    private $pizzaDataFile = 'Pizza.json';
-
-    public function consultarPizza($request) {
-        $sabor = $request['sabor'];
-        $tipo = $request['tipo'];
-
-        $pizzas = $this->leerPizzas();
-
-        foreach ($pizzas as $pizza) {
-            if ($pizza['sabor'] === $sabor && $pizza['tipo'] === $tipo) {
-                return ['message' => 'Si Hay'];
+    function POST_consultarPizza($arrayPizzas){
+        if(!isset($_POST['sabor'],  $_POST['tipo']))
+        {
+            echo "ERROR!! Carga de datos invalida";
+        }
+        else{
+            $sabor = $_POST['sabor'];
+            $tipo =  $_POST['tipo'];
+            $pizza = new Pizza($sabor, 0, $tipo, 0, 0);
+            $indice = $pizza->PizzaYaExiste($arrayPizzas);
+            if($indice == -1){
+                $indiceSabor = $pizza->ExisteSabor($arrayPizzas);
+                $indiceTipo = $pizza->ExisteTipo($arrayPizzas);
+                if($indiceSabor == -1){
+                    echo "No existe sabor\n";
+                }
+                else{
+                    echo "No existe tipo \n"; 
+                }
+            }
+            else{
+                echo "Si Hay \n";
             }
         }
-
-        if (!$this->tipoExiste($tipo)) {
-            return ['message' => 'El tipo de pizza no existe'];
-        } elseif (!$this->saborExiste($sabor)) {
-            return ['message' => 'El sabor de pizza no existe'];
-        }
-
-        return ['message' => 'No existe coincidencia'];
     }
-
-    private function leerPizzas() {
-        if (file_exists($this->pizzaDataFile)) {
-            $json = file_get_contents($this->pizzaDataFile);
-            return json_decode($json, true);
-        } else {
-            return [];
-        }
-    }
-
-    private function tipoExiste($tipo) {
-        $pizzas = $this->leerPizzas();
-        foreach ($pizzas as $pizza) {
-            if ($pizza['tipo'] === $tipo) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function saborExiste($sabor) {
-        $pizzas = $this->leerPizzas();
-        foreach ($pizzas as $pizza) {
-            if ($pizza['sabor'] === $sabor) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
 ?>
