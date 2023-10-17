@@ -7,7 +7,6 @@ function POST_borrarVenta($arrayVentas, $pathVentas, $rutaEliminarImagen, $rutaI
     else
     {
         $numeroDePedido = $_POST['numeroDePedido'];
-
         $indice = Venta::VentaYaExiste($arrayVentas, $numeroDePedido);
         if($indice == -1){
             echo "La venta no existe\n";
