@@ -1,0 +1,22 @@
+[
+    {
+        "numeroCuenta": 314646,
+        "nombre": "caliari",
+        "tipoDoc": "dni",
+        "numeroDoc": "2044444444",
+        "mail": "nico@gmail.com",
+        "tipoCuenta": "caja de ahorro",
+        "moneda": "usd",
+        "saldo": "2000"
+    },
+    {
+        "numeroCuenta": 505853,
+        "nombre": "malena",
+        "tipoDoc": "dni",
+        "numeroDoc": "43626067",
+        "mail": "nico@gmail.com",
+        "tipoCuenta": "caja de ahorro",
+        "moneda": "usd",
+        "saldo": "90000"
+    }
+]

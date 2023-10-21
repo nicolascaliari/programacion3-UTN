@@ -1,68 +1,69 @@
 <?php
-include_once "pizza.php";
-include "ventas.php";
-include "generarId.php";
-$pathPizza = "Pizza.json";
-$pathVenta = "venta.json";
-$rutaImagenDeVenta = 'C:\xampp\htdocs\simulacroParcial4\ImagenesDeLaVenta';
-$rutaImagenPizzas = 'C:\xampp\htdocs\programacion3-utn\primer_parcial\ImagenesDePizzas';
-$rutaBackupVentas = 'C:\xampp\htdocs\simulacroParcial4\BACKUPVENTAS';
-$pizzas = Pizza::LeerPizzaJson($pathPizza);
-$ventas = Venta::LeerVentasJson($pathVenta);
-$ultimoIdVenta = IDGenerador::GenerarIdVenta($pathVenta);
-$ultimoIdPizza = IDGenerador::GenerarIdPizza($pathPizza);
+$directorioActual = __DIR__;
+var_dump($directorioActual);
+$rutaImagenCuenta = $directorioActual . '/ImagenesCuentas/2023';
+$rutaImagenDeposito = $directorioActual . '/ImagenesDepositos/2023';
+var_dump($rutaImagenCuenta);
+var_dump($rutaImagenDeposito);
 
 
-switch($_SERVER["REQUEST_METHOD"])
-{
+switch ($_SERVER['REQUEST_METHOD']) {
     case "POST":
-        if(!isset($_POST['accion'])){
-            echo "ERROR!! Carga de datos invalida";
-        }
-        else{
-            switch($_POST['accion'])
-            {
-                case "consultar":
-                    include "PizzaConsultar.php";
-                    POST_consultarPizza($pizzas);
-                break;
-                case "venta":
-                    include "AltaVenta.php";
-                    POST_altaVenta($pizzas, $ventas, $ultimoIdVenta, $pathPizza, $pathVenta, $rutaImagenDeVenta);
-                break;
-                case "consultarVentas":
-                    include "ConsultarVentas.php";
-                    POST_consultarVentas($ventas);
-                break;
-                case "carga":
-                    include "PizzaCarga.php";
-                    POST_cargarPizza($pathPizza, $pizzas, $ultimoIdPizza, $rutaImagenPizzas);
-                break;
-                case "modificar":
-                    include "ModificarVenta.php";
-                    POST_modificarVenta($ventas, $pathVenta);
-                break;
-                case "borrar":
-                    include "borrarVenta.php";
-                    POST_borrarVenta($ventas, $pathVenta, $rutaBackupVentas, $rutaImagenDeVenta);
-                break;
+        if (isset($_POST['accion'])) {
+            switch ($_POST['accion']) {
+                case 'alta':
+                    include 'CuentaAlta.php';
+                    echo cuentaAlta($rutaImagenCuenta);
+                    break;
+                case 'consultar':
+                    include 'ConsultarCuenta.php';
+                    echo consultarCuenta();
+                    break;
+                case 'depositar':
+                    include 'DepositoCuenta.php';
+                    echo depositar($rutaImagenDeposito);
+                    break;
             }
+        } else {
+            echo "Error. Faltan parametros.";
         }
-    break;
-
+        break;
     case "GET":
-        if(!isset($_GET['accion'])){
-            echo "ERROR!! Carga de datos invalida";
-        }
-        else{
-            switch($_GET['accion'])
-            {
-                case "carga":
-                    include "PizzaCarga.php";
-                    GET_cargarPizza($pathPizza, $pizzas, $ultimoIdPizza);
-    
-                break;
+        //         Datos a consultar:
+// a- El total depositado (monto) por tipo de cuenta y moneda en un día en
+// particular (se envía por parámetro), si no se pasa fecha, se muestran las del día
+// anterior.
+// b- El listado de depósitos para un usuario en particular.
+// c- El listado de depósitos entre dos fechas ordenado por nombre.
+// d- El listado de depósitos por tipo de cuenta.
+// e- El listado de depósitos por moneda.
+        if (isset($_GET['accion'])) {
+            switch ($_GET['accion']) {
+                case 'consultarTotal':
+                    echo "entre";
+                    include 'ConsultarMovimientos.php';
+                    echo ConsultarDepositoPorTipoYMoneda();
+                    echo "sali";
+                    break;
+
+                case "consultarDepositos":
+                    echo ConsultarDepositosUsuario();
+                    break;
+
+                case "consultarDepositosEntreFechas":
+                    echo ConsultarDepositosEntreFechas();
+                    break;
+
+                case "consultarDepositosPorTipoCuenta":
+                    echo ConsultarDepositosPorTipoCuenta();
+                    break;
+                case 'consultarDepositoPorMoneda':
+                    echo ConsultarDepositosPorMoneda();
+                    break;
             }
+        } else {
+            echo "Error. Faltan parametros.";
         }
-    break;
+        break;
 }
+?>

@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "fecha": "21-10-2023",
+        "monto": "5000",
+        "tipoCuenta": "caja de ahorro",
+        "numeroCuenta": "314646",
+        "moneda": "usd"
+    },
+    {
+        "id": 1,
+        "fecha": "21-10-2023",
+        "monto": "90000",
+        "tipoCuenta": "caja de ahorro",
+        "numeroCuenta": "505853",
+        "moneda": "usd"
+    }
+]
