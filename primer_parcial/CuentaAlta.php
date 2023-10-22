@@ -1,5 +1,5 @@
 <?php
-include './Cuenta.php';
+include './cuenta.php';
 function cuentaAlta($ruta){
     if(!isset($_POST["nombre"]) || !isset($_POST["tipoDoc"]) || !isset($_POST["numeroDoc"]) || !isset($_POST["mail"]) || !isset($_POST["tipoCuenta"]) || !isset($_POST["moneda"]) || !isset($_POST["saldo"]) || !isset($_FILES["imagen"])){
         return 'Error. Faltan parametros para el alta de venta.';

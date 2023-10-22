@@ -9,10 +9,26 @@
     },
     {
         "id": 1,
-        "fecha": "21-10-2023",
+        "fecha": "21-10-2024",
         "monto": "90000",
         "tipoCuenta": "caja de ahorro",
         "numeroCuenta": "505853",
+        "moneda": "pesos"
+    },
+    {
+        "id": 1,
+        "fecha": "21-10-2019",
+        "monto": "5000",
+        "tipoCuenta": "caja de ahorro",
+        "numeroCuenta": "314646",
         "moneda": "usd"
+    },
+    {
+        "id": 1,
+        "fecha": "18-10-2024",
+        "monto": "5000",
+        "tipoCuenta": "caja de ahorro",
+        "numeroCuenta": "314646",
+        "moneda": "pesos"
     }
 ]

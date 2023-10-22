@@ -1,3 +1,14 @@
+//cosas que me faltan : 
+-Validacion de tipo de cuenta;
+-validacion de moneda;
+-Crear id autoincremental para los dos json;
+-terminar punto 4;
+-chequear bug en punto 5;
+-terminar punto 6 === falta generar json de retiro;
+-hacer punto 7;
+
+
+
 <?php
 $directorioActual = __DIR__;
 var_dump($directorioActual);
@@ -23,41 +34,47 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     include 'DepositoCuenta.php';
                     echo depositar($rutaImagenDeposito);
                     break;
+                case 'modificar':
+                    include "ModificarCuenta.php";
+                    echo modificar();
+                    break;
+
+                case 'RetiroCuenta':
+                    include 'RetiroCuenta.php';
+                    echo RetiroCuenta();
+                    break;
+
+                case 'AjusteCuenta':
+                    break;
             }
         } else {
             echo "Error. Faltan parametros.";
         }
         break;
     case "GET":
-        //         Datos a consultar:
-// a- El total depositado (monto) por tipo de cuenta y moneda en un día en
-// particular (se envía por parámetro), si no se pasa fecha, se muestran las del día
-// anterior.
-// b- El listado de depósitos para un usuario en particular.
-// c- El listado de depósitos entre dos fechas ordenado por nombre.
-// d- El listado de depósitos por tipo de cuenta.
-// e- El listado de depósitos por moneda.
         if (isset($_GET['accion'])) {
             switch ($_GET['accion']) {
                 case 'consultarTotal':
-                    echo "entre";
                     include 'ConsultarMovimientos.php';
                     echo ConsultarDepositoPorTipoYMoneda();
-                    echo "sali";
                     break;
 
                 case "consultarDepositos":
+                    include 'ConsultarMovimientos.php';
                     echo ConsultarDepositosUsuario();
                     break;
 
                 case "consultarDepositosEntreFechas":
+                    include 'ConsultarMovimientos.php';
                     echo ConsultarDepositosEntreFechas();
                     break;
 
                 case "consultarDepositosPorTipoCuenta":
+                    include 'ConsultarMovimientos.php';
                     echo ConsultarDepositosPorTipoCuenta();
                     break;
                 case 'consultarDepositoPorMoneda':
+                    include 'ConsultarMovimientos.php';
                     echo ConsultarDepositosPorMoneda();
                     break;
             }
