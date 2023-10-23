@@ -31,7 +31,7 @@ class Cuenta
         $this->moneda = $moneda;
         $this->saldo = $saldo;
     }
-    public function __construct8($numeroCuenta, $nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $moneda, $saldo)
+    public function __construct8($numeroCuenta, $nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $moneda, $saldo = null)
     {
         $this->numeroCuenta = $numeroCuenta;
         $this->nombre = $nombre;
@@ -44,16 +44,6 @@ class Cuenta
     }
 
 
-    public function __construct9($numeroCuenta, $nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $moneda)
-    {
-        $this->numeroCuenta = $numeroCuenta;
-        $this->nombre = $nombre;
-        $this->tipoDoc = $tipoDoc;
-        $this->numeroDoc = $numeroDoc;
-        $this->mail = $mail;
-        $this->tipoCuenta = $tipoCuenta;
-        $this->moneda = $moneda;
-    }
 
     public static function LeerJSONCuenta()
     {
@@ -87,7 +77,7 @@ class Cuenta
         if (count($cuentas) > 0) {
             foreach ($cuentas as &$cuenta) {
                 if ($cuenta->numeroDoc === $this->numeroDoc) {
-                    $cuenta->saldo = $saldo;
+                    $cuenta->saldo += $saldo;
                     Cuenta::EscribirJSONCuenta($cuentas);
                     return true;
                 }
@@ -181,8 +171,6 @@ class Cuenta
         $cuentas = Cuenta::LeerJSONCuenta();
         $cuentas[$indice]->saldo -= $monto;
 
-        echo "estoy";
-
         $ventaJson = json_encode($cuentas);
         $archivo = fopen("banco.json", "w");
 
@@ -194,10 +182,15 @@ class Cuenta
             }
         }
         fclose($archivo);
-
-
-        //Cuenta::EscribirJSONCuenta($cuenta);
     }
 
+
+    public static function VerificarSaldo($monto, $indice) {
+        $cuentas = Cuenta::LeerJSONCuenta();
+        if ($cuentas[$indice]->saldo >= $monto) {
+            return true;
+        }
+        return false;
+    }
 }
 ?>

@@ -3,11 +3,7 @@
 -validacion de moneda;
 -Crear id autoincremental para los dos json;
 -terminar punto 4;
--chequear bug en punto 5;
--terminar punto 6 === falta generar json de retiro;
 -hacer punto 7;
-
-
 
 <?php
 $directorioActual = __DIR__;

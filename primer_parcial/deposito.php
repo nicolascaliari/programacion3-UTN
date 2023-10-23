@@ -9,8 +9,10 @@ class Deposito
     public $numeroCuenta;
     public $moneda;
 
+    public $cuenta;
 
-    public function __construct($id, $fecha, $monto, $tipoCuenta, $numeroCuenta, $moneda)
+
+    public function __construct($id, $fecha, $monto, $tipoCuenta, $numeroCuenta, $moneda, $cuenta)
     {
         $this->id = $id;
         $this->fecha = $fecha;
@@ -18,6 +20,7 @@ class Deposito
         $this->tipoCuenta = $tipoCuenta;
         $this->numeroCuenta = $numeroCuenta;
         $this->moneda = $moneda;
+        $this->cuenta = $cuenta;
     }
 
 
@@ -30,7 +33,7 @@ class Deposito
             if ($cuentas != null) {
                 $cuentasObj = array();
                 foreach ($cuentas as $cuenta) {
-                    $cuentaObj = new Deposito($cuenta['id'], $cuenta['fecha'], $cuenta['monto'], $cuenta['tipoCuenta'], $cuenta['numeroCuenta'], $cuenta['moneda']);
+                    $cuentaObj = new Deposito($cuenta['id'], $cuenta['fecha'], $cuenta['monto'], $cuenta['tipoCuenta'], $cuenta['numeroCuenta'], $cuenta['moneda'], $cuenta['cuenta']);
                     $cuentasObj[] = $cuentaObj;
                 }
                 return $cuentasObj;
@@ -50,9 +53,134 @@ class Deposito
     }
 
 
-    public function DestinoImagenDeposito($ruta){
-        $destino = $ruta."\\".$this->tipoCuenta."-".$this->numeroCuenta."-".$this->id.".png";
+    public function DepositoExiste()
+    {
+        $depositos = Deposito::LeerJSONDeposito();
+        if (count($depositos) > 0) {
+            foreach ($depositos as $deposito) {
+                if ($deposito->id === $this->id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+    public function DestinoImagenDeposito($ruta)
+    {
+        $destino = $ruta . "\\" . $this->tipoCuenta . "-" . $this->numeroCuenta . "-" . $this->id . ".png";
         return $destino;
+    }
+
+
+    public static function MostrarDepositos($depositos)
+    {
+        if (count($depositos) > 0) {
+            foreach ($depositos as $deposito) {
+                echo "ID: ", $deposito->id, "\n";
+                echo "Tipo Cuenta: ", $deposito->tipoCuenta, "\n";
+                echo "Numero Cuenta: ", $deposito->numeroCuenta, "\n";
+                echo "Moneda: ", $deposito->moneda, "\n";
+                echo "Deposito: ", $deposito->deposito, "\n";
+                echo "Fecha: ", $deposito->fecha, "\n\n";
+            }
+        }
+    }
+
+
+
+    public static function MovimientosPorTipoYMoneda($tipo, $moneda, $fecha)
+    {
+        $depositos = Deposito::LeerJSONDeposito();
+
+        $total = 0;
+
+        foreach ($depositos as $deposito) {
+            if ($deposito->tipoCuenta == $tipo && $deposito->moneda == $moneda && $deposito->fecha == $fecha) {
+                $total += $deposito->monto;
+            }
+        }
+    }
+
+
+
+    public static function MovimientosPorUsuario($usuario)
+    {
+        $depositos = Deposito::LeerJSONDeposito();
+        $depositosUsuario = array();
+        if (count($depositos) > 0) {
+            foreach ($depositos as $deposito) {
+                if ($deposito->numeroCuenta == $usuario) {
+                    array_push($depositosUsuario, $deposito);
+                }
+            }
+            return json_encode($depositosUsuario);
+        }
+        return false;
+    }
+
+
+    public function FechaDentroRango($fechaInicio, $fechaLimite)
+    {
+        $fechaDeposito = strtotime($this->fecha);
+        $inicio = strtotime($fechaInicio);
+        $fin = strtotime($fechaLimite);
+        if ($fechaDeposito >= $inicio && $fechaDeposito <= $fin) {
+            return true;
+        }
+        return false;
+    }
+
+    public static function FiltrarDepositosPorFecha($fechaInicio, $fechaLimite)
+    {
+        $nuevoArrayFiltrado = array();
+        $depositos = Deposito::LeerJSONDeposito();
+        if (count($depositos) > 0) {
+            foreach ($depositos as $deposito) {
+                if ($deposito->FechaDentroRango($fechaInicio, $fechaLimite)) {
+                    array_push($nuevoArrayFiltrado, $deposito);
+                }
+            }
+        }
+        return $nuevoArrayFiltrado;
+    }
+
+    public static function CompararNumeroCuenta($a, $b)
+    {
+        return $a->numeroCuenta > $b->numeroCuenta;
+    }
+    public static function OrdenarDepositosPorNumeroCuenta($depositos)
+    {
+        usort($depositos, 'Deposito::CompararNumeroCuenta');
+        return $depositos;
+    }
+
+
+
+    public static function MovimientosPorTipoCuenta($tipoCuenta)
+    {
+        $depositos = Deposito::LeerJSONDeposito();
+        $depositosPorTipoCuenta = array();
+        foreach ($depositos as $deposito) {
+            if ($deposito->tipoCuenta == $tipoCuenta) {
+                array_push($depositosPorTipoCuenta, $deposito);
+            }
+        }
+        return json_encode($depositosPorTipoCuenta);
+    }
+
+
+    public static function MovimientosPorMoneda($moneda)
+    {
+        $depositos = Deposito::LeerJSONDeposito();
+        $depositosPorMoneda = array();
+        foreach ($depositos as $deposito) {
+            if ($deposito->moneda == $moneda) {
+                array_push($depositosPorMoneda, $deposito);
+            }
+        }
+        return json_encode($depositosPorMoneda);
     }
 }
 

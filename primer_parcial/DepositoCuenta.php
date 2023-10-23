@@ -18,7 +18,7 @@ function depositar($pathImagen)
             $cuenta->ActualizarSaldo($importe);
 
             $depositos = Deposito::LeerJSONDeposito();
-            $deposito = new Deposito(1, date("d-m-Y"), $importe, $tipoCuenta, $numeroCuenta, $moneda);
+            $deposito = new Deposito(1, date("d-m-Y"), $importe, $tipoCuenta, $numeroCuenta, $moneda, $cuenta);
             $depositos[] = $deposito;
             Deposito::EscribirJSONDeposito($depositos);
             echo "Se dio de alta correctamente";

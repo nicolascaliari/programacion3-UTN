@@ -12,11 +12,9 @@ function modificar()
         $mail = $_POST["mail"];
         $tipoCuenta = $_POST["tipoCuenta"];
         $moneda = $_POST["moneda"];
-        echo $nombre;
-        echo $numeroCuenta;
+        $saldo = $_POST["saldo"];
 
-
-        $buffer = new Cuenta($numeroCuenta, $nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $moneda);
+        $buffer = new Cuenta($numeroCuenta, $nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $moneda, $saldo);        
         $cuentaExiste = Cuenta::CuentaYaExiste($numeroCuenta);
 
 
