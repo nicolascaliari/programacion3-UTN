@@ -10,10 +10,9 @@ function RetiroCuenta()
     } else {
         $numeroCuenta = $_POST["numeroCuenta"];
         $monto = $_POST["monto"];
-
-
+        
         $cuenta = Cuenta::CuentaYaExiste($numeroCuenta);
-        $validacionSaldo = Cuenta::VerificarSaldo($monto, $cuenta);
+        $validacionSaldo = Cuenta::VerificarSaldo($monto, $numeroCuenta);
 
 
 

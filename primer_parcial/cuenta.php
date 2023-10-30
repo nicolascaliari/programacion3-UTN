@@ -7,8 +7,8 @@ class Cuenta
     public $numeroDoc;
     public $mail;
     public $tipoCuenta;
-    public $moneda;
     public $saldo;
+
 
     public function __construct()
     {
@@ -20,7 +20,7 @@ class Cuenta
         }
     }
 
-    public function __construct7($nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $moneda, $saldo)
+    public function __construct6($nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $saldo)
     {
         $this->numeroCuenta = rand(100000, 999999);
         $this->nombre = $nombre;
@@ -28,10 +28,9 @@ class Cuenta
         $this->numeroDoc = $numeroDoc;
         $this->mail = $mail;
         $this->tipoCuenta = $tipoCuenta;
-        $this->moneda = $moneda;
         $this->saldo = $saldo;
     }
-    public function __construct8($numeroCuenta, $nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $moneda, $saldo = null)
+    public function __construct7($numeroCuenta, $nombre, $tipoDoc, $numeroDoc, $mail, $tipoCuenta, $saldo = null)
     {
         $this->numeroCuenta = $numeroCuenta;
         $this->nombre = $nombre;
@@ -39,7 +38,6 @@ class Cuenta
         $this->numeroDoc = $numeroDoc;
         $this->mail = $mail;
         $this->tipoCuenta = $tipoCuenta;
-        $this->moneda = $moneda;
         $this->saldo = $saldo;
     }
 
@@ -52,10 +50,14 @@ class Cuenta
             $cuentas = json_decode(file_get_contents($pathJSON), true);
             if ($cuentas != null) {
                 $cuentasObj = array();
+                // echo "go";
                 foreach ($cuentas as $cuenta) {
-                    $cuentaObj = new Cuenta($cuenta['numeroCuenta'], $cuenta['nombre'], $cuenta['tipoDoc'], $cuenta['numeroDoc'], $cuenta['mail'], $cuenta['tipoCuenta'], $cuenta['moneda'], $cuenta['saldo']);
+                    // echo "go";
+                    var_dump($cuentas);
+                    $cuentaObj = new Cuenta($cuenta['numeroCuenta'], $cuenta['nombre'], $cuenta['tipoDoc'], $cuenta['numeroDoc'], $cuenta['mail'], $cuenta['tipoCuenta'], $cuenta['saldo']);
                     $cuentasObj[] = $cuentaObj;
                 }
+                //echo "go";
                 return $cuentasObj;
             }
         }
@@ -87,11 +89,11 @@ class Cuenta
         return false;
     }
 
-    public function DestinoImagenCuenta($ruta)
-    {
-        $destino = $ruta . "\\" . $this->numeroCuenta . "-" . $this->tipoCuenta . ".png";
-        return $destino;
-    }
+    // public function DestinoImagenCuenta($ruta)
+    // {
+    //     $destino = $ruta . "\\" . $this->numeroCuenta . "-" . $this->tipoCuenta . ".png";
+    //     return $destino;
+    // }
 
 
 
@@ -116,12 +118,15 @@ class Cuenta
 
 
 
-    public static function CuentaExiste($numeroCuenta)
+    public static function CuentaExiste($numeroCuenta, $tipoCuenta)
     {
+        //  echo "go";
         $cuentas = Cuenta::LeerJSONCuenta();
+        echo "pepe";
         if (count($cuentas) > 0) {
+            //a    echo "go";
             foreach ($cuentas as $cuenta) {
-                if ($cuenta->numeroCuenta == $numeroCuenta) {
+                if ($cuenta->numeroCuenta == $numeroCuenta && $cuenta->tipoCuenta == $tipoCuenta) {
                     return $cuenta;
                 }
             }
@@ -167,7 +172,8 @@ class Cuenta
 
 
 
-    public static function RetirarDinero ($monto, $indice) {
+    public static function RetirarDinero($monto, $indice)
+    {
         $cuentas = Cuenta::LeerJSONCuenta();
         $cuentas[$indice]->saldo -= $monto;
 
@@ -185,12 +191,46 @@ class Cuenta
     }
 
 
-    public static function VerificarSaldo($monto, $indice) {
+    public static function VerificarSaldo($monto, $numeroCuenta)
+    {
         $cuentas = Cuenta::LeerJSONCuenta();
-        if ($cuentas[$indice]->saldo >= $monto) {
-            return true;
+        foreach ($cuentas as &$cuenta) {
+            if ($cuenta->numeroCuenta == $numeroCuenta) {
+                if ($cuenta->saldo > $monto) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
         return false;
     }
+
+    public static function AjustarCuenta($numeroCuenta, $ajuste)
+    {
+        var_dump($numeroCuenta);
+        $cuentas = Cuenta::LeerJSONCuenta();
+        if (count($cuentas) > 0) {
+            foreach ($cuentas as &$cuenta) {
+                if ($cuenta->numeroCuenta == $numeroCuenta) {
+                    var_dump($cuenta->numeroCuenta);
+                    $cuenta->saldo = $cuenta->saldo - $ajuste;
+                    Cuenta::EscribirJSONCuenta($cuentas);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    public function DefinirDestinoImagen($ruta)
+    {
+        echo "go";
+        $destino = str_replace('\\', '/', $ruta) . $this->numeroCuenta . '.png';
+        return $destino;
+    }
+
 }
 ?>

@@ -1,22 +1,11 @@
 [
     {
-        "numeroCuenta": "304178",
-        "nombre": "nicotina",
+        "numeroCuenta": 539133,
+        "nombre": "nicolas",
         "tipoDoc": "dni",
-        "numeroDoc": "20444444444",
+        "numeroDoc": "1130092810",
         "mail": "nico@gmail.com",
-        "tipoCuenta": "caja de ahorro",
-        "moneda": "usd",
-        "saldo": 92000
-    },
-    {
-        "numeroCuenta": 161058,
-        "nombre": "malena",
-        "tipoDoc": "dni",
-        "numeroDoc": "43626067",
-        "mail": "nico@gmail.com",
-        "tipoCuenta": "caja de ahorro",
-        "moneda": "usd",
-        "saldo": 3000
+        "tipoCuenta": "CA$",
+        "saldo": "5000"
     }
 ]

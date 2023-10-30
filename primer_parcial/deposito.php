@@ -8,21 +8,39 @@ class Deposito
     public $tipoCuenta;
     public $numeroCuenta;
     public $moneda;
-
     public $cuenta;
 
-
-    public function __construct($id, $fecha, $monto, $tipoCuenta, $numeroCuenta, $moneda, $cuenta)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->fecha = $fecha;
-        $this->monto = $monto;
+        $params = func_get_args();
+        $num_params = func_num_args();
+        $funcion_constructor = '__construct' . $num_params;
+        if (method_exists($this, $funcion_constructor)) {
+            call_user_func_array(array($this, $funcion_constructor), $params);
+        }
+    }
+
+    public function __construct5($tipoCuenta, $numeroCuenta, $moneda, $monto, $cuenta)
+    {
+        $this->id = rand(100, 999);
         $this->tipoCuenta = $tipoCuenta;
         $this->numeroCuenta = $numeroCuenta;
         $this->moneda = $moneda;
+        $this->monto = $monto;
+        $this->fecha = date("d-m-Y");
         $this->cuenta = $cuenta;
     }
 
+    public function __construct7($id, $tipoCuenta, $numeroCuenta, $moneda, $monto, $fecha, $cuenta)
+    {
+        $this->id = $id;
+        $this->tipoCuenta = $tipoCuenta;
+        $this->numeroCuenta = $numeroCuenta;
+        $this->moneda = $moneda;
+        $this->monto = $monto;
+        $this->fecha = $fecha;
+        $this->cuenta = $cuenta;
+    }
 
 
     public static function LeerJSONDeposito()
@@ -34,6 +52,7 @@ class Deposito
                 $cuentasObj = array();
                 foreach ($cuentas as $cuenta) {
                     $cuentaObj = new Deposito($cuenta['id'], $cuenta['fecha'], $cuenta['monto'], $cuenta['tipoCuenta'], $cuenta['numeroCuenta'], $cuenta['moneda'], $cuenta['cuenta']);
+                    var_dump($cuentaObj);
                     $cuentasObj[] = $cuentaObj;
                 }
                 return $cuentasObj;
@@ -53,12 +72,12 @@ class Deposito
     }
 
 
-    public function DepositoExiste()
+    public static function DepositoExiste($numeroCuenta)
     {
         $depositos = Deposito::LeerJSONDeposito();
         if (count($depositos) > 0) {
             foreach ($depositos as $deposito) {
-                if ($deposito->id === $this->id) {
+                if ($deposito->numeroCuenta === $numeroCuenta) {
                     return true;
                 }
             }
@@ -82,7 +101,7 @@ class Deposito
                 echo "Tipo Cuenta: ", $deposito->tipoCuenta, "\n";
                 echo "Numero Cuenta: ", $deposito->numeroCuenta, "\n";
                 echo "Moneda: ", $deposito->moneda, "\n";
-                echo "Deposito: ", $deposito->deposito, "\n";
+                echo "Deposito: ", $deposito->monto, "\n";
                 echo "Fecha: ", $deposito->fecha, "\n\n";
             }
         }
@@ -101,21 +120,22 @@ class Deposito
                 $total += $deposito->monto;
             }
         }
+        return $total;
     }
 
 
 
-    public static function MovimientosPorUsuario($usuario)
+    public static function MovimientosPorUsuario($numeroCuenta)
     {
         $depositos = Deposito::LeerJSONDeposito();
         $depositosUsuario = array();
         if (count($depositos) > 0) {
             foreach ($depositos as $deposito) {
-                if ($deposito->numeroCuenta == $usuario) {
+                if ($deposito->numeroCuenta == $numeroCuenta) {
                     array_push($depositosUsuario, $deposito);
                 }
             }
-            return json_encode($depositosUsuario);
+            return $depositosUsuario;
         }
         return false;
     }
@@ -167,7 +187,7 @@ class Deposito
                 array_push($depositosPorTipoCuenta, $deposito);
             }
         }
-        return json_encode($depositosPorTipoCuenta);
+        return $depositosPorTipoCuenta;
     }
 
 
@@ -180,7 +200,19 @@ class Deposito
                 array_push($depositosPorMoneda, $deposito);
             }
         }
-        return json_encode($depositosPorMoneda);
+        return $depositosPorMoneda;
+    }
+
+
+    public static function BuscarDeposito($id)
+    {
+        $depositos = Deposito::LeerJSONDeposito();
+        foreach ($depositos as $deposito) {
+            if ($deposito->id == $id) {
+                return $deposito;
+            }
+        }
+        return false;
     }
 }
 

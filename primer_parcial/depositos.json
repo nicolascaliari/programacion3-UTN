@@ -1,92 +1,20 @@
 [
     {
-        "id": 1,
-        "fecha": "22-10-2023",
-        "monto": "90000",
-        "tipoCuenta": "caja de ahorro",
-        "numeroCuenta": "304178",
-        "moneda": "usd",
+        "id": 116,
+        "fecha": "23-10-2023",
+        "monto": "5000",
+        "tipoCuenta": "Caja de ahorro",
+        "numeroCuenta": "607545",
+        "moneda": "ARS",
         "cuenta": {
-            "numeroCuenta": "304178",
+            "numeroCuenta": "607545",
             "nombre": "nicotina",
             "tipoDoc": "dni",
             "numeroDoc": "20444444444",
             "mail": "nico@gmail.com",
-            "tipoCuenta": "caja de ahorro",
-            "moneda": "usd",
-            "saldo": "90000"
-        }
-    },
-    {
-        "id": 1,
-        "fecha": "22-10-2023",
-        "monto": "90000",
-        "tipoCuenta": "caja de ahorro",
-        "numeroCuenta": "161058",
-        "moneda": "usd",
-        "cuenta": {
-            "numeroCuenta": 161058,
-            "nombre": "malena",
-            "tipoDoc": "dni",
-            "numeroDoc": "43626067",
-            "mail": "nico@gmail.com",
-            "tipoCuenta": "caja de ahorro",
-            "moneda": "usd",
-            "saldo": 0
-        }
-    },
-    {
-        "id": 1,
-        "fecha": "22-10-2023",
-        "monto": "1000",
-        "tipoCuenta": "caja de ahorro",
-        "numeroCuenta": "161058",
-        "moneda": "usd",
-        "cuenta": {
-            "numeroCuenta": 161058,
-            "nombre": "malena",
-            "tipoDoc": "dni",
-            "numeroDoc": "43626067",
-            "mail": "nico@gmail.com",
-            "tipoCuenta": "caja de ahorro",
-            "moneda": "usd",
-            "saldo": "90000"
-        }
-    },
-    {
-        "id": 1,
-        "fecha": "22-10-2023",
-        "monto": "2000",
-        "tipoCuenta": "caja de ahorro",
-        "numeroCuenta": "161058",
-        "moneda": "usd",
-        "cuenta": {
-            "numeroCuenta": 161058,
-            "nombre": "malena",
-            "tipoDoc": "dni",
-            "numeroDoc": "43626067",
-            "mail": "nico@gmail.com",
-            "tipoCuenta": "caja de ahorro",
-            "moneda": "usd",
-            "saldo": "1000"
-        }
-    },
-    {
-        "id": 1,
-        "fecha": "22-10-2023",
-        "monto": "2000",
-        "tipoCuenta": "caja de ahorro",
-        "numeroCuenta": "304178",
-        "moneda": "usd",
-        "cuenta": {
-            "numeroCuenta": "304178",
-            "nombre": "nicotina",
-            "tipoDoc": "dni",
-            "numeroDoc": "20444444444",
-            "mail": "nico@gmail.com",
-            "tipoCuenta": "caja de ahorro",
-            "moneda": "usd",
-            "saldo": "90000"
+            "tipoCuenta": "Caja de ahorro",
+            "moneda": "USD",
+            "saldo": 100347000
         }
     }
 ]

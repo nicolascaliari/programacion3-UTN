@@ -1,38 +1,52 @@
 <?php
+/*DepositoCuenta.php: (por POST) se recibe el Tipo de Cuenta, Nro de Cuenta y
+Moneda y el importe a depositar, si la cuenta existe en banco.json, se incrementa el
+saldo existente según el importe depositado y se registra en el archivo depósitos.json
+la operación con los datos de la cuenta y el depósito (fecha, monto) e id
+autoincremental). Si la cuenta no existe, informar el error.
+
+b- Completar el depósito con imagen del talón de depósito con el nombre: Tipo de
+Cuenta, Nro. de Cuenta e Id de Depósito, guardando la imagen en la carpeta
+/ImagenesDeDepositos2023.*/
 include './cuenta.php';
 include './deposito.php';
-function depositar($pathImagen)
+
+function depositar($ruta)
 {
     if (!isset($_POST["tipoCuenta"]) || !isset($_POST["numeroCuenta"]) || !isset($_POST["moneda"]) || !isset($_POST["importe"]) || !isset($_FILES["imagen"])) {
-        echo "error en los parametros recibidos";
+        return 'Error. Faltan parametros para la consulta de la venta.';
     } else {
         $tipoCuenta = $_POST["tipoCuenta"];
         $numeroCuenta = $_POST["numeroCuenta"];
         $moneda = $_POST["moneda"];
-        $importe = $_POST["importe"];
+        $deposito = $_POST["importe"];
         $imagen = $_FILES["imagen"];
 
-        $cuenta = Cuenta::CuentaExiste($numeroCuenta);
 
-        if ($cuenta !== false) {
-            $cuenta->ActualizarSaldo($importe);
+        if ($cuenta = Cuenta::CuentaExiste($numeroCuenta, $tipoCuenta)) {
 
+            $nuevoSaldo = $cuenta->saldo + $deposito;
+            $cuenta->ActualizarSaldo($nuevoSaldo);
+            $deposito = new Deposito($tipoCuenta, $numeroCuenta, $moneda, $deposito, $cuenta);
             $depositos = Deposito::LeerJSONDeposito();
-            $deposito = new Deposito(1, date("d-m-Y"), $importe, $tipoCuenta, $numeroCuenta, $moneda, $cuenta);
             $depositos[] = $deposito;
             Deposito::EscribirJSONDeposito($depositos);
-            echo "Se dio de alta correctamente";
+            $respuesta = 'Se depositó exitosamente. ';
 
-            if (move_uploaded_file($imagen['tmp_name'], $deposito->DestinoImagenDeposito($pathImagen))) {
-                echo "Se guardo la imagen";
+
+            if (move_uploaded_file($imagen['tmp_name'], $deposito->DestinoImagenDeposito($ruta))) {
+                $respuesta = $respuesta . ' ' . 'Se guardó la imagen';
             } else {
-                echo "No se pudo guardar la imagen";
+                $respuesta = $respuesta . ' ' . 'La imagen no pudo ser guardada';
             }
+
         } else {
-            echo "no existe la cuenta";
+            return 'Cuenta no existe';
         }
 
+        return $respuesta;
     }
-
 }
+
+
 ?>
